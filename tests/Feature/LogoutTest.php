@@ -10,11 +10,6 @@ use Tests\TestCase;
 
 class LogoutTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
 
     public function test_logout_failed()
     {

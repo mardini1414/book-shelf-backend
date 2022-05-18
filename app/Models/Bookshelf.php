@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Bookshelf extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'title', 'author', 'year', 'is_readed'
+    ];
 }
