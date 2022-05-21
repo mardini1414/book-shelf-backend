@@ -37,7 +37,7 @@ class BookShelfTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)->putJson('/api/book/4/update', ['title' => 'Sukizan naik haji', 'author' => 'Sarimin', 'year' => 2010, 'is_readed' => 1]);
+        $response = $this->actingAs($user)->putJson('/api/book/4', ['title' => 'Sukizan naik haji', 'author' => 'Sarimin', 'year' => 2010, 'is_readed' => 1]);
         $response->assertStatus(200)->assertJson(['message' => 'the book has been successfully updated']);
     }
 
