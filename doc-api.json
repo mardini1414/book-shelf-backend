@@ -1,0 +1,348 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Book shelf API",
+    "version": "1.0",
+    "contact": {
+      "name": "Mardini",
+      "email": "mardini1414@gmail.com",
+      "url": "https://mardini.my.id"
+    },
+    "license": {
+      "name": "APACHE 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://book-shelf-backend.test/api"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bookShelfAuth": {
+        "description": "authentication for book shelf app",
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "create or update book": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 20
+          },
+          "author": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 20
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1800
+          },
+          "is_readed": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "response message": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "login user",
+        "description": "login to aplication",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "minLength": 5
+                  },
+                  "password": {
+                    "minLength": 6
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "delete": {
+        "security": [
+          {
+            "bookShelfAuth": []
+          }
+        ],
+        "tags": [
+          "Auth"
+        ],
+        "summary": "logout user",
+        "description": "logout user from application",
+        "responses": {
+          "200": {
+            "description": "success logout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book": {
+      "get": {
+        "security": [
+          {
+            "bookShelfAuth": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "get books",
+        "description": "get all book",
+        "responses": {
+          "200": {
+            "description": "success get all books",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "author": {
+                        "type": "string"
+                      },
+                      "year": {
+                        "type": "integer"
+                      },
+                      "is_readed": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bookShelfAuth": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "add book",
+        "description": "add book to shelf",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create or update book"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success add book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/book/{id}": {
+      "get": {
+        "security": [
+          {
+            "bookShelfAuth": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "get specific book",
+        "description": "get specific book with id",
+        "responses": {
+          "200": {
+            "description": "success get book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "author": {
+                      "type": "string"
+                    },
+                    "year": {
+                      "type": "integer"
+                    },
+                    "is_readed": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "book id",
+            "in": "path",
+            "required": true,
+            "description": "book id for get book by id",
+            "schema": {
+              "example": "/book/1"
+            }
+          }
+        ]
+      },
+      "put": {
+        "security": [
+          {
+            "bookShelfAuth": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "update data book",
+        "description": "update data book by id",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create or update book"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "success update book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response message"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "book id",
+            "in": "path",
+            "required": true,
+            "description": "book id for update",
+            "schema": {
+              "example": "/book/1"
+            }
+          }
+        ]
+      },
+      "delete": {
+        "security": [
+          {
+            "bookShelfAuth": []
+          }
+        ],
+        "tags": [
+          "Book"
+        ],
+        "summary": "delete book",
+        "description": "delete book by id",
+        "responses": {
+          "200": {
+            "description": "success delete book",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/response message"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "book id",
+            "in": "path",
+            "required": true,
+            "description": "book id for delete",
+            "schema": {
+              "example": "/book/1"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
