@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "http://book-shelf-backend.test/api"
+      "url": "https://book-shelf-app-api.herokuapp.com/api"
     }
   ],
   "components": {
